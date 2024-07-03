@@ -17,7 +17,9 @@ items_data = load_data("PreprocessedImages/MOCK_DATAITEMS_processed_with_feature
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
-
+@app.route('/hello', methods=['GET'])
+def hello():
+    return "Hello, World!", 200
 @app.route('/scan_place', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -80,4 +82,4 @@ def scan_item():
         }), 200
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=True)
