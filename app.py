@@ -20,8 +20,10 @@ logging.basicConfig(level=logging.DEBUG)
 @app.route('/hello', methods=['GET'])
 def hello():
     return "Hello, World!", 200
+
 @app.route('/scan_place', methods=['POST'])
 def upload_file():
+    app.logger.debug(f"Received request: {request.form}, {request.files}")
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
 
@@ -41,7 +43,6 @@ def upload_file():
         user_features = preprocess_uploaded_image(file_path, vgg_model)
         similar_places = find_similar_places(city_name, user_features, places_data)
 
-        # Logging the response data
         logging.debug(f"city_name: {city_name}, similar_places: {similar_places}")
 
         return jsonify({
@@ -53,6 +54,7 @@ def upload_file():
 
 @app.route('/scan_item', methods=['POST'])
 def scan_item():
+    app.logger.debug(f"Received request: {request.form}, {request.files}")
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
 
@@ -71,7 +73,6 @@ def scan_item():
         user_features = preprocess_uploaded_image(file_path, vgg_model)
         similar_item = find_similar_item(place_name, user_features, items_data)
 
-        # Logging the response data
         logging.debug(f"place_name: {place_name}, similar_item: {similar_item}")
 
         return jsonify({
